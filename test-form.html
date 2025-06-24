@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Submit Your Answer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 10px;
+      max-width: 500px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      font-size: 1rem;
+      margin-top: 5px;
+      padding: 8px;
+    }
+    #status {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <h3>Student Answer Form</h3>
+
+  <label>Student Name:
+    <input id="student" type="text" placeholder="e.g., Yuki A">
+  </label>
+
+  <label>Question:
+    <textarea id="question" placeholder="e.g., What do you like?"></textarea>
+  </label>
+
+  <label>Answer:
+    <textarea id="answer" placeholder="e.g., I like sushi."></textarea>
+  </label>
+
+  <label>Score:
+    <select id="score">
+      <option value="15">15 - Perfect</option>
+      <option value="10">10 - OK</option>
+      <option value="5">5 - Needs Help</option>
+      <option value="0">0 - No Attempt</option>
+    </select>
+  </label>
+
+  <button onclick="submitAnswer()">Submit</button>
+
+  <div id="status"></div>
+
+  <script>
+    function submitAnswer() {
+      const data = {
+        student: document.getElementById("student").value.trim(),
+        question: document.getElementById("question").value.trim(),
+        answer: document.getElementById("answer").value.trim(),
+        score: parseInt(document.getElementById("score").value)
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbwNaa3mqaMeuIHLnCtuAWihVUdEPI3CQUk_8Mwx7CLY6AidN9HM1zwGQYZLq1RnoeBY/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(txt => {
+        document.getElementById("status").textContent = "✅ Submitted!";
+      })
+      .catch(err => {
+        document.getElementById("status").textContent = "❌ Error submitting.";
+        console.error(err);
+      });
+    }
+  </script>
+
+</body>
+</html>
